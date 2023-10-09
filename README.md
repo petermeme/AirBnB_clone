@@ -1,3 +1,3 @@
 # AirBnB_clone
-- chaos
+- Clean code
 - Fix me!!
