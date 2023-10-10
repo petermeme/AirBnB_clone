@@ -8,7 +8,8 @@ class FileStorage:
     """Represent an abstracted storage engine.
 
     Attributes:
-        __file_path (str):  string - path to the JSON file (ex: file.json)        __objects (dict): dictionary - empty but will store all objects by class.
+        __file_path (str):  string - path to the JSON file (ex: file.json)
+        __objects (dict): dictionary - empty but will store all objects by class.
     """
     __file_path = "file.json"
     __objects = {}
@@ -19,8 +20,8 @@ class FileStorage:
 
     def new(self, obj):
         """Set in __objects obj with key <obj_class_name>.id"""
-        obname = obj.__class__.__name__
-        FileStorage.__objects["{}.{}".format(obname, obj.id)] = obj
+        key = "{}.{}".format(obj.__class__.__name__, obj.id)
+        FileStorage.__objects[key] = obj
 
     def save(self):
         """Serialize __objects to the JSON file __file_path."""
@@ -33,7 +34,10 @@ class FileStorage:
         """Deserialize the JSON file __file_path to __objects, if it exists."""
         try:
             with open(FileStorage.__file_path) as f:
-                obj_dict = json.load(f)
+                data = f.read()
+                if not data:  # empty file
+                    return
+                obj_dict = json.loads(data)
                 for o in obj_dict.values():
                     cls_name = o["__class__"]
                     del o["__class__"]

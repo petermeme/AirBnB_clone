@@ -32,7 +32,8 @@ class TestBaseModel(TestCase):
         """
         self.assertEqual(self.model.created_at, self.model.updated_at)
 
-    def test_str_(self):
+    def test_str(self):
+        """Tests the verbose representation of a BaseModel"""
         self.assertEqual(str(self.model),
                          f"[BaseModel] ({self.model.id})"
                          f" {self.model.__dict__}")
@@ -70,5 +71,3 @@ class TestBaseModel(TestCase):
         self.assertEqual(self.model.created_at, model1.created_at)
         self.assertEqual(self.model.updated_at, model1.updated_at)
         self.assertEqual("Test Model", model1.name)
-
-

@@ -15,11 +15,6 @@ class BaseModel:
 
     def __init__(self, *args, **kwargs):
         """Initialization"""
-        self.id = str(uuid.uuid4())
-        now = datetime.now()
-        self.created_at = now
-        self.updated_at = now
-        time = "%Y-%m-%dT%H:%M:%S.%f"
         if len(kwargs) != 0:
             forbidden_keys = ['__class__']
             datetime_keys = ['created_at', 'updated_at']
@@ -29,8 +24,12 @@ class BaseModel:
                 if k in datetime_keys:
                     # convert to datetime object
                     v = datetime.strptime(v, '%Y-%m-%dT%H:%M:%S.%f')
-                    setattr(self, k, v)
+                setattr(self, k, v)
         else:
+            self.id = str(uuid.uuid4())
+            now = datetime.now()
+            self.created_at = now
+            self.updated_at = now
             models.storage.new(self)
 
     def __str__(self):
