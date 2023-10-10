@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 """
-This is an abstraction class to bve inherited by other classes of the project
+This is an abstraction class to be inherited by other classes of the project
 """
 import uuid
 from datetime import datetime
