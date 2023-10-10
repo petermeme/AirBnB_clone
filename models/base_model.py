@@ -14,16 +14,21 @@ class BaseModel:
 
     def __init__(self, *args, **kwargs):
         """Initialization"""
-        self.id = str(uuid.uuid4())
-        now = datetime.now()
-        self.created_at = now
-        self.updated_at = now
-        if len(kwargs) != 0:
-            for i, a in kwargs.items():
-                if i == "created_at" or i == "updated_at":
-                    self.__dict__[i] = datetime.strptime(a, "%Y-%m-%dT%H:%M:%S.%f")
-                else:
-                    self.__dict__[i] = a
+        if kwargs:
+            forbidden_keys = ['__class__']
+            datetime_keys = ['created_at', 'updated_at']
+            for k, v in kwargs.items():
+                if k in forbidden_keys:
+                    continue
+                if k in datetime_keys:
+                    # convert to datetime object
+                    v = datetime.strptime(v, '%Y-%m-%dT%H:%M:%S.%f')
+                setattr(self, k, v)
+        else:
+            self.id = str(uuid.uuid4())
+            now = datetime.now()
+            self.created_at = now
+            self.updated_at = now
 
     def __str__(self):
         return "[{}] ({}) {}".format(self.__class__.__name__,
