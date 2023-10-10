@@ -3,6 +3,7 @@
 """
 This is an abstraction class to be inherited by other classes of the project
 """
+import models
 import uuid
 from datetime import datetime
 
@@ -14,7 +15,12 @@ class BaseModel:
 
     def __init__(self, *args, **kwargs):
         """Initialization"""
-        if kwargs:
+        self.id = str(uuid.uuid4())
+        now = datetime.now()
+        self.created_at = now
+        self.updated_at = now
+        time = "%Y-%m-%dT%H:%M:%S.%f"
+        if len(kwargs) != 0:
             forbidden_keys = ['__class__']
             datetime_keys = ['created_at', 'updated_at']
             for k, v in kwargs.items():
@@ -23,12 +29,9 @@ class BaseModel:
                 if k in datetime_keys:
                     # convert to datetime object
                     v = datetime.strptime(v, '%Y-%m-%dT%H:%M:%S.%f')
-                setattr(self, k, v)
+                    setattr(self, k, v)
         else:
-            self.id = str(uuid.uuid4())
-            now = datetime.now()
-            self.created_at = now
-            self.updated_at = now
+            models.storage.new(self)
 
     def __str__(self):
         return "[{}] ({}) {}".format(self.__class__.__name__,
@@ -38,6 +41,7 @@ class BaseModel:
         """updates the public instance attribute updated_
         at with the current datetime"""
         self.updated_at = datetime.now()
+        models.storage.save()
 
     def to_dict(self):
         """Returns a dictionary representation of an object"""
