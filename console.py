@@ -1,14 +1,15 @@
 #!/usr/bin/env python
 """Defines the HBnB console."""
 import cmd
-from models.base_model import BaseModel
 from models import storage
+from models.base_model import BaseModel
 from models.user import User
 from models.state import State
 from models.city import City
 from models.place import Place
 from models.amenity import Amenity
 from models.review import Review
+
 
 class HBNBCommand(cmd.Cmd):
     """Defines the HolbertonBnB command interpreter.
@@ -26,7 +27,7 @@ class HBNBCommand(cmd.Cmd):
         "Place",
         "Amenity",
         "Review"
-        }
+    }
 
     def emptyline(self):
         """Do nothing upon receiving an empty line."""
@@ -40,16 +41,12 @@ class HBNBCommand(cmd.Cmd):
         """EOF signal to exit the program."""
         return True
 
-    @property
-    def implemented_models(self):
-        return ['BaseModel']
-
     def do_create(self, arg):
         """Creates an instance of the passed class if it exists,
         saves it and prints its id"""
         if not arg:
             return print("** class name missing **")
-        if arg not in self.implemented_models:
+        if arg not in self.__classes:
             return print("** class doesn't exist **")
         obj = eval(arg)()
         obj.save()
@@ -60,7 +57,7 @@ class HBNBCommand(cmd.Cmd):
         if not arg:
             return print("** class name missing **")
         args = arg.split()
-        if args[0] not in self.implemented_models:
+        if args[0] not in self.__classes:
             return print("** class doesn't exist **")
         if len(args) < 2:
             return print("** instance id missing **")
@@ -75,7 +72,7 @@ class HBNBCommand(cmd.Cmd):
         if not arg:
             return print("** class name missing **")
         args = arg.split()
-        if args[0] not in self.implemented_models:
+        if args[0] not in self.__classes:
             return print("** class doesn't exist **")
         if len(args) < 2:
             return print("** instance id missing **")
@@ -89,7 +86,7 @@ class HBNBCommand(cmd.Cmd):
         """prints all instances of a given model"""
         if not arg:
             return print("** class name missing **")
-        if arg not in self.implemented_models:
+        if arg not in self.__classes:
             return print("** class doesn't exist **")
         instances = [str(instance) for k, instance in storage.all().items() if
                      k.startswith("{}.".format(arg))]
@@ -100,7 +97,7 @@ class HBNBCommand(cmd.Cmd):
         if not arg:
             return print("** class name missing **")
         args = arg.split()
-        if args[0] not in self.implemented_models:
+        if args[0] not in self.__classes:
             return print("** class doesn't exist **")
         if len(args) < 2:
             return print("** instance id missing **")
