@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 """Defines the HBnB console."""
 import cmd
+import re
+
 from models import storage
 from models.base_model import BaseModel
 from models.user import User
@@ -28,6 +30,8 @@ class HBNBCommand(cmd.Cmd):
         "Amenity",
         "Review"
     }
+
+    patterns = {'all': r'[A-Za-z]+\.all\(\)'}
 
     def emptyline(self):
         """Do nothing upon receiving an empty line."""
@@ -111,6 +115,12 @@ class HBNBCommand(cmd.Cmd):
             return print("** value missing **")
         setattr(instance, args[2], eval(args[3]))
         instance.save()
+
+    def default(self, line):
+        """Handle shortcut/customized commands"""
+        if line.endswith(".all()"):
+            return self.cmdqueue.append("all {}".format(line.split(".")[0]))
+        super(HBNBCommand, self).default(line)
 
 
 if __name__ == "__main__":
