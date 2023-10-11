@@ -120,6 +120,10 @@ class HBNBCommand(cmd.Cmd):
         """Handle shortcut/customized commands"""
         if line.endswith(".all()"):
             return self.cmdqueue.append("all {}".format(line.split(".")[0]))
+        elif line.endswith('.count()'):
+            klas = line.split(".")[0]
+            matching = [k for k in storage.all().keys() if k.startswith(klas)]
+            return print(len(matching))
         super(HBNBCommand, self).default(line)
 
 
