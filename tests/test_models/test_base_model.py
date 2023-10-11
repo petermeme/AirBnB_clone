@@ -1,3 +1,4 @@
+import json
 from unittest import TestCase
 from models.base_model import BaseModel
 from datetime import datetime
@@ -7,6 +8,8 @@ from datetime import datetime
 
 class TestBaseModel(TestCase):
     """Test engine for BaseModel class"""
+
+    file_name = "file.json"
 
     def setUp(self):
         """Initializes the test model"""
@@ -38,6 +41,16 @@ class TestBaseModel(TestCase):
                          f"[BaseModel] ({self.model.id})"
                          f" {self.model.__dict__}")
 
+    def test_save(self):
+        """Test whether BaseModel object is successfully saved when save() is
+        called"""
+        model = BaseModel()
+        model.save()
+        key = "BaseModel.{}".format(model.id)
+        with open(self.file_name, 'r') as f:
+            data = json.loads(f.read() or "{}")
+            self.assertIn(key, data.keys())
+
     def test_date_change_on_save(self):
         """Ensure updated_at is changed to a future date on save"""
         self.assertEqual(self.model.created_at, self.model.updated_at)
@@ -66,8 +79,8 @@ class TestBaseModel(TestCase):
         """Ascertains that we are able to recreate
         an object given its dict representation"""
         kw = self.model.to_dict()
-        model1 = BaseModel(**kw)
-        self.assertEqual(self.model.id, model1.id)
-        self.assertEqual(self.model.created_at, model1.created_at)
-        self.assertEqual(self.model.updated_at, model1.updated_at)
-        self.assertEqual("Test Model", model1.name)
+        model = BaseModel(**kw)
+        self.assertEqual(self.model.id, model.id)
+        self.assertEqual(self.model.created_at, model.created_at)
+        self.assertEqual(self.model.updated_at, model.updated_at)
+        self.assertEqual("Test Model", model.name)
