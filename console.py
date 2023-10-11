@@ -85,6 +85,26 @@ class HBNBCommand(cmd.Cmd):
                      k.startswith("{}.".format(arg))]
         print(instances)
 
+    def do_update(self, arg):
+        """updates a model instance"""
+        if not arg:
+            return self.print_error("** class name missing **")
+        args = arg.split()
+        if args[0] not in self.implemented_models:
+            return self.print_error("** class doesn't exist **")
+        if len(args) < 2:
+            return self.print_error("** instance id missing **")
+        key = "{}.{}".format(args[0], args[1])
+        instance = storage.all().get(key)
+        if not instance:
+            return self.print_error("** no instance found **")
+        if len(args) < 3:
+            return self.print_error("** attribute name missing **")
+        if len(args) < 4:
+            return self.print_error("** value missing **")
+        setattr(instance, args[2], eval(args[3]))
+        instance.save()
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
