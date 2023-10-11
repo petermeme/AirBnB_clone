@@ -31,7 +31,11 @@ class HBNBCommand(cmd.Cmd):
         "Review"
     }
 
-    patterns = {'all': r'[A-Za-z]+\.all\(\)'}
+    patterns = {
+        'all': r'[A-Za-z]+\.all\(\)',
+        'count': r'[A-Za-z]+\.count\(\)',
+        'show': r'([A-Za-z]+)\.show\(([\w-]+)\)'
+    }
 
     def emptyline(self):
         """Do nothing upon receiving an empty line."""
@@ -118,16 +122,23 @@ class HBNBCommand(cmd.Cmd):
 
     def default(self, line):
         """Handle shortcut/customized commands"""
-        if line.endswith(".all()"):
+        match = re.search(self.patterns['all'], line)
+        if match:
             klas = line.split(".")[0]
             if klas in self.__classes:
                 return self.cmdqueue.append("all {}".format(klas))
-        elif line.endswith('.count()'):
+        match = re.search(self.patterns['count'], line)
+        if match:
             klas = line.split(".")[0]
             if klas in self.__classes:
                 matching = [k for k in storage.all().keys() if
                             k.startswith(klas)]
                 return print(len(matching))
+        match = re.search(self.patterns['show'], line)
+        if match:
+            klas = match.group(1)
+            uid = match.group(2)
+            return self.cmdqueue.append("show {} {}".format(klas, uid))
         super(HBNBCommand, self).default(line)
 
 
