@@ -75,6 +75,16 @@ class HBNBCommand(cmd.Cmd):
             return self.print_error("** no instance found **")
         storage.delete(key)
 
+    def do_all(self, arg):
+        """prints all instances of a given model"""
+        if not arg:
+            return self.print_error("** class name missing **")
+        if arg not in self.implemented_models:
+            return self.print_error("** class doesn't exist **")
+        instances = [str(instance) for k, instance in storage.all().items() if
+                     k.startswith("{}.".format(arg))]
+        print(instances)
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
