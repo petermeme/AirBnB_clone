@@ -34,7 +34,8 @@ class HBNBCommand(cmd.Cmd):
     patterns = {
         'all': r'[A-Za-z]+\.all\(\)',
         'count': r'[A-Za-z]+\.count\(\)',
-        'show': r'([A-Za-z]+)\.show\(([\w-]+)\)'
+        'show': r'([A-Za-z]+)\.show\(([\w-]+)\)',
+        'destroy': r'([A-Za-z]+)\.destroy\(([\w-]+)\)'
     }
 
     def emptyline(self):
@@ -139,6 +140,11 @@ class HBNBCommand(cmd.Cmd):
             klas = match.group(1)
             uid = match.group(2)
             return self.cmdqueue.append("show {} {}".format(klas, uid))
+        match = re.search(self.patterns['destroy'], line)
+        if match:
+            klas = match.group(1)
+            uid = match.group(2)
+            return self.cmdqueue.append("destroy {} {}".format(klas, uid))
         super(HBNBCommand, self).default(line)
 
 
