@@ -166,6 +166,7 @@ class HBNBCommand(cmd.Cmd):
                                                   attribute_name,
                                                   attribute_value)
             return self.cmdqueue.append(command)
+        # Model.update with dict
         match = re.search(self.patterns['update_from_dict'], line)
         if match:
             klas = match.group(1)
