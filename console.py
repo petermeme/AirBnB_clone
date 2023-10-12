@@ -38,6 +38,7 @@ class HBNBCommand(cmd.Cmd):
         'destroy': r'([A-Za-z]+)\.destroy\((["\'\w-]+)\)',
         'update': r'^([A-Za-z]+)\.update\((["\'\w-]+), (["\'\w_]+), '
                   r'(["\'\@\$\w_\.-]+)\)$',
+        'update_from_dict': r'^([A-Za-z]+)\.update\((["\'\w-]+), (\{.*?\})\)'
     }
 
     def emptyline(self):
@@ -120,7 +121,11 @@ class HBNBCommand(cmd.Cmd):
             return print("** attribute name missing **")
         if len(args) < 4:
             return print("** value missing **")
-        setattr(instance, args[2], eval(args[3]))
+        try:
+            value = eval(args[3])
+        except NameError:
+            value = args[3]
+        setattr(instance, args[2], value)
         instance.save()
 
     def default(self, line):
@@ -161,6 +166,14 @@ class HBNBCommand(cmd.Cmd):
                                                   attribute_name,
                                                   attribute_value)
             return self.cmdqueue.append(command)
+        match = re.search(self.patterns['update_from_dict'], line)
+        if match:
+            klas = match.group(1)
+            uid = eval(match.group(2))
+            kw = eval(match.group(3))
+            commands = ["update {} {} {} {}".format(klas, uid, k, v)
+                        for k, v in kw.items()]
+            return self.cmdqueue.extend(commands)
         return super(HBNBCommand, self).default(line)
 
 
