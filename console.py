@@ -32,10 +32,12 @@ class HBNBCommand(cmd.Cmd):
     }
 
     patterns = {
-        'all': r'[A-Za-z]+\.all\(\)',
-        'count': r'[A-Za-z]+\.count\(\)',
-        'show': r'([A-Za-z]+)\.show\(([\w-]+)\)',
-        'destroy': r'([A-Za-z]+)\.destroy\(([\w-]+)\)'
+        'all': r'^([A-Za-z]+)\.all\(\)$',
+        'count': r'^([A-Za-z]+)\.count\(\)$',
+        'show': r'^([A-Za-z]+)\.show\((["\'\w-]+)\)$',
+        'destroy': r'([A-Za-z]+)\.destroy\((["\'\w-]+)\)',
+        'update': r'^([A-Za-z]+)\.update\((["\'\w-]+), (["\'\w_]+), '
+                  r'(["\'\@\$\w_\.-]+)\)$',
     }
 
     def emptyline(self):
@@ -123,29 +125,43 @@ class HBNBCommand(cmd.Cmd):
 
     def default(self, line):
         """Handle shortcut/customized commands"""
+        # Model.all
         match = re.search(self.patterns['all'], line)
         if match:
-            klas = line.split(".")[0]
-            if klas in self.__classes:
-                return self.cmdqueue.append("all {}".format(klas))
+            klas = match.group(1)
+            return self.cmdqueue.append("all {}".format(klas))
+        # Mode.count
         match = re.search(self.patterns['count'], line)
         if match:
-            klas = line.split(".")[0]
+            klas = match.group(1)
             if klas in self.__classes:
                 matching = [k for k in storage.all().keys() if
                             k.startswith(klas)]
                 return print(len(matching))
+        # Model.show
         match = re.search(self.patterns['show'], line)
         if match:
             klas = match.group(1)
-            uid = match.group(2)
+            uid = eval(match.group(2))
             return self.cmdqueue.append("show {} {}".format(klas, uid))
+        # Model.destroy
         match = re.search(self.patterns['destroy'], line)
         if match:
             klas = match.group(1)
-            uid = match.group(2)
+            uid = eval(match.group(2))
             return self.cmdqueue.append("destroy {} {}".format(klas, uid))
-        super(HBNBCommand, self).default(line)
+        match = re.search(self.patterns['update'], line)
+        # Model.update
+        if match:
+            klas = match.group(1)
+            uid = eval(match.group(2))
+            attribute_name = eval(match.group(3))
+            attribute_value = match.group(4)
+            command = "update {} {} {} {}".format(klas, uid,
+                                                  attribute_name,
+                                                  attribute_value)
+            return self.cmdqueue.append(command)
+        return super(HBNBCommand, self).default(line)
 
 
 if __name__ == "__main__":
