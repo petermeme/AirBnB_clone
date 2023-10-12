@@ -1,9 +1,9 @@
+#!/usr/bin/python3
+"""This module tests the User Model"""
 import json
 from datetime import datetime
 from unittest import TestCase
 from models.user import User
-
-"""This modules tests the User Model"""
 
 
 class TestUser(TestCase):

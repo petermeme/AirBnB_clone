@@ -1,9 +1,9 @@
+#!/usr/bin/python3
+"""This module tests the storage process flow"""
 from unittest import TestCase
 
 from models import storage
 from models.base_model import BaseModel
-
-"""This module tests the storage process flow"""
 
 
 class TestFileStorage(TestCase):

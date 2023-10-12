@@ -1,9 +1,9 @@
+#!/usr/bin/python3
+"""Tests for BaseModel class"""
 import json
 from unittest import TestCase
 from models.base_model import BaseModel
 from datetime import datetime
-
-"""Tests for BaseModel class"""
 
 
 class TestBaseModel(TestCase):

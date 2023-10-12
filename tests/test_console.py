@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+"""This is a Testsuite for the console"""
 import json
 from io import StringIO
 from unittest import TestCase
@@ -8,6 +10,8 @@ from console import HBNBCommand
 
 
 class TestConsole(TestCase):
+    """Test Engine for the console"""
+
     file_name = "file.json"
 
     def setUp(self):
