@@ -2,6 +2,12 @@
 """Defines the FileStorage class."""
 import json
 from models.base_model import BaseModel
+from models.user import User
+from models.state import State
+from models.city import City
+from models.place import Place
+from models.amenity import Amenity
+from models.review import Review
 
 
 class FileStorage:
@@ -44,3 +50,9 @@ class FileStorage:
                     self.new(eval(cls_name)(**o))
         except FileNotFoundError:
             return
+
+    def delete(self, key):
+        """deletes an instance given a key in the format <Model.instance_id>"""
+        if key in self.__objects:
+            del self.__objects[key]
+            self.save()
