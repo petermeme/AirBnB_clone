@@ -467,11 +467,23 @@ class TestConsole(TestCase):
             data = json.loads(file.read())
             self.assertEqual(data[key][att], value)
 
+    def test_update_user_advanced_compound_string(self):
+        """Test User.update() with a compound string"""
+        att = "name"
+        value = "John Doe"
+        HBNBCommand().onecmd('User.update("{}", "{}", "{}")'.
+                             format(self.user_id, att, value))
+        key = 'User.{}'.format(self.user_id)
+        self.assertEqual(getattr(storage.all().get(key), att), value)
+        with open(self.file_name, 'r') as file:
+            data = json.loads(file.read())
+            self.assertEqual(data[key][att], value)
+
     def test_update_user_advanced_int(self):
         """Test User.update() with an int value"""
         att = 'age'
         value = 25
-        HBNBCommand().onecmd('User.update("{}", "{}", "{}")'.
+        HBNBCommand().onecmd('User.update("{}", "{}", {})'.
                              format(self.user_id, att, value))
         key = 'User.{}'.format(self.user_id)
         self.assertEqual(getattr(storage.all().get(key), att), value)
@@ -481,7 +493,7 @@ class TestConsole(TestCase):
 
     def test_update_user_advanced_dict(self):
         """Test User.update() with a dict value"""
-        vals = {"first_name": "John", "age": 89}
+        vals = {'first_name': "John", "age": 89}
         HBNBCommand().onecmd('User.update("{}", {})'.
                              format(self.user_id, vals))
         key = 'User.{}'.format(self.user_id)

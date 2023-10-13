@@ -37,7 +37,7 @@ class HBNBCommand(cmd.Cmd):
         'show': r'^([A-Za-z]+)\.show\((["\'\w-]+)\)$',
         'destroy': r'([A-Za-z]+)\.destroy\((["\'\w-]+)\)',
         'update': r'^([A-Za-z]+)\.update\((["\'\w-]+), (["\'\w_]+), '
-                  r'(["\'\@\$\w_\.-]+)\)$',
+                  r'([" \'\@\$\w_\.-]+)\)$',
         'update_from_dict': r'^([A-Za-z]+)\.update\((["\'\w-]+), (\{.*?\})\)'
     }
 
@@ -137,6 +137,13 @@ class HBNBCommand(cmd.Cmd):
         setattr(instance, arg[2], value)
         instance.save()
 
+    def custom_eval(self, arg):
+        """Processes a value to be parsed to do_update"""
+        arg = str(arg)
+        if arg.replace('.', '', 1).isdigit():
+            return str(arg)
+        return '"{}"'.format(arg)
+
     def onecmd(self, line):
         """Override to handle advanced commands"""
         # Model.all
@@ -168,7 +175,7 @@ class HBNBCommand(cmd.Cmd):
             klas = match.group(1)
             uid = eval(match.group(2))
             attribute_name = eval(match.group(3))
-            value = eval(match.group(4))
+            value = match.group(4)
             command = "{} {} {} {}".format(klas, uid,
                                            attribute_name, value)
             return self.do_update(command)
@@ -179,7 +186,8 @@ class HBNBCommand(cmd.Cmd):
             uid = eval(match.group(2))
             kw = eval(match.group(3))
             for k, v in kw.items():
-                self.do_update("{} {} {} {}".format(klas, uid, k,  v))
+                self.do_update("{} {} {} {}".format(klas, uid, k,
+                                                    self.custom_eval(v)))
             return
         return super(HBNBCommand, self).onecmd(line)
 
