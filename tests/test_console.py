@@ -16,6 +16,7 @@ class TestConsole(TestCase):
     file_name = "file.json"
 
     def setUp(self):
+        """Initialization of test instances"""
         with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd("create User")
             self.user_id = f.getvalue().strip().split('\n')[-1]
@@ -297,3 +298,20 @@ class TestConsole(TestCase):
             with open(self.file_name, 'r') as file:
                 keys = json.loads(file.read()).keys()
                 self.assertNotIn(key, keys)
+
+    def test_all_with_invalid_class(self):
+        """Tests all with an invalid className"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("all Goat")
+            res = f.getvalue().strip().split('\n')[-1]
+            self.assertEqual(res, "** class doesn't exist **")
+
+    def test_all_with_valid_class(self):
+        """Tests all with a valid className"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("all User")
+            res = eval(f.getvalue().strip().split('\n')[-1])
+            expected = [str(user) for k, user in storage.all().items() if
+                        k.startswith('User.')]
+            for i in range(len(expected)):
+                self.assertEqual(res[i], expected[i])
