@@ -130,7 +130,10 @@ class HBNBCommand(cmd.Cmd):
             return print("** attribute name missing **")
         if len(arg) < 4:
             return print("** value missing **")
-        value = eval(arg[3])
+        try:
+            value = eval(arg[3])
+        except (NameError, SyntaxError):
+            value = arg[3]
         setattr(instance, arg[2], value)
         instance.save()
 
