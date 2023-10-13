@@ -32,15 +32,15 @@ class TestConsole(TestCase):
             HBNBCommand().onecmd("create Amenity")
             self.amenity_id = f.getvalue().strip().split('\n')[-1]
 
-    def test_create_class_missing(self):
-        """Tests creation of BaseModel instance"""
+    def test_create_without_class(self):
+        """Tests create without a className"""
         with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd("create")
             uid = f.getvalue().strip().split('\n')[-1]
             self.assertEqual(uid, "** class name missing **")
 
-    def test_create_class_not_exist(self):
-        """Tests creation of BaseModel instance"""
+    def test_create_with_invalid_class(self):
+        """Tests create with an invalid className"""
         with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd("create Goat")
             uid = f.getvalue().strip().split('\n')[-1]
@@ -116,26 +116,33 @@ class TestConsole(TestCase):
                 keys = json.loads(file.read()).keys()
                 self.assertIn('Amenity.{}'.format(uid), keys)
 
-    def test_show_class_missing(self):
-        """Tests creation of BaseModel instance"""
+    def test_show_without_class(self):
+        """Tests show without a className"""
         with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd("show")
             uid = f.getvalue().strip().split('\n')[-1]
             self.assertEqual(uid, "** class name missing **")
 
-    def test_show_class_not_exist(self):
-        """Tests creation of BaseModel instance"""
+    def test_show_with_invalid_class(self):
+        """Tests show with invalid className"""
         with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd("show Goat")
             uid = f.getvalue().strip().split('\n')[-1]
             self.assertEqual(uid, "** class doesn't exist **")
 
-    def test_show_uid_not_exist(self):
-        """Tests creation of BaseModel instance"""
+    def test_show_without_id(self):
+        """Tests show without an instance id"""
         with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("show Goat %s" % str(uuid.uuid4()))
+            HBNBCommand().onecmd("show User")
             uid = f.getvalue().strip().split('\n')[-1]
-            self.assertEqual(uid, "** class doesn't exist **")
+            self.assertEqual(uid, "** instance id missing **")
+
+    def test_show_with_invalid_id(self):
+        """Tests show with an invalid instance id"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("show User %s" % str(uuid.uuid4()))
+            uid = f.getvalue().strip().split('\n')[-1]
+            self.assertEqual(uid, "** no instance found **")
 
     def test_show_user(self):
         with patch('sys.stdout', new=StringIO()) as f:
@@ -192,3 +199,61 @@ class TestConsole(TestCase):
             key = 'Amenity.{}'.format(self.amenity_id)
             expected = str(storage.all().get(key))
             self.assertEqual(res, expected)
+
+    def test_destroy_without_class(self):
+        """Tests destroy without className"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("destroy")
+            uid = f.getvalue().strip().split('\n')[-1]
+            self.assertEqual(uid, "** class name missing **")
+
+    def test_destroy_with_invalid_class(self):
+        """Tests destroy with invalid className"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("show Goat")
+            uid = f.getvalue().strip().split('\n')[-1]
+            self.assertEqual(uid, "** class doesn't exist **")
+
+    def test_destroy_without_id(self):
+        """Tests destroy without an instance id"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("show User")
+            uid = f.getvalue().strip().split('\n')[-1]
+            self.assertEqual(uid, "** instance id missing **")
+
+    def test_destroy_with_invalid_id(self):
+        """Tests destroy with an invalid instance id"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("destroy User %s" % str(uuid.uuid4()))
+            uid = f.getvalue().strip().split('\n')[-1]
+            self.assertEqual(uid, "** no instance found **")
+
+    def test_destroy_user(self):
+        """Tests destroy User instance"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("destroy User %s" % self.user_id)
+            key = 'User.{}'.format(self.user_id)
+            self.assertIsNone(storage.all().get(key))
+            with open(self.file_name, 'r') as file:
+                keys = json.loads(file.read()).keys()
+                self.assertNotIn(key, keys)
+
+    def test_destroy_state(self):
+        """Tests destroy User instance"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("destroy State %s" % self.state_id)
+            key = 'State.{}'.format(self.state_id)
+            self.assertIsNone(storage.all().get(key))
+            with open(self.file_name, 'r') as file:
+                keys = json.loads(file.read()).keys()
+                self.assertNotIn(key, keys)
+
+    def test_destroy_review(self):
+        """Tests destroy Review instance"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("destroy Review %s" % self.review_id)
+            key = 'Review.{}'.format(self.review_id)
+            self.assertIsNone(storage.all().get(key))
+            with open(self.file_name, 'r') as file:
+                keys = json.loads(file.read()).keys()
+                self.assertNotIn(key, keys)
