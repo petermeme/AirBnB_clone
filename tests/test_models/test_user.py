@@ -1,15 +1,17 @@
 #!/usr/bin/python3
 """This module tests the User Model"""
 import json
+import os
 from datetime import datetime
 from unittest import TestCase
 from models.user import User
+from tests import BASE_DIR
 
 
 class TestUser(TestCase):
     """Test engine for user model"""
 
-    file_name = "file.json"
+    file_name = os.path.join(BASE_DIR, 'file.json')
 
     def setUp(self):
         """Creates a user object for testing"""

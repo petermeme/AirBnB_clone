@@ -4,14 +4,12 @@ import json
 import os.path
 import uuid
 from io import StringIO
-from pathlib import Path
 from unittest import TestCase
 from unittest.mock import patch
 from models import storage
 
 from console import HBNBCommand
-
-BASE_DIR = Path(__file__).resolve().parent.parent
+from tests import BASE_DIR
 
 
 class TestConsole(TestCase):

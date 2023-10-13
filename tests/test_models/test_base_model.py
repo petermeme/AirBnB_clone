@@ -1,15 +1,18 @@
 #!/usr/bin/python3
 """Tests for BaseModel class"""
 import json
+import os
 from unittest import TestCase
 from models.base_model import BaseModel
 from datetime import datetime
+
+from tests import BASE_DIR
 
 
 class TestBaseModel(TestCase):
     """Test engine for BaseModel class"""
 
-    file_name = "file.json"
+    file_name = os.path.join(BASE_DIR, 'file.json')
 
     def setUp(self):
         """Initializes the test model"""
