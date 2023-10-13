@@ -348,7 +348,7 @@ class TestConsole(TestCase):
         """Tests update User instance"""
         att = 'email'
         value = 'testupdate@alx.org'
-        HBNBCommand().onecmd("update User {} {} {}"
+        HBNBCommand().onecmd('update User {} {} "{}"'
                              .format(self.user_id, att, value))
         key = 'User.{}'.format(self.user_id)
         self.assertEqual(getattr(storage.all().get(key), att), value)
@@ -360,7 +360,7 @@ class TestConsole(TestCase):
         """Tests update State instance"""
         att = 'name'
         value = 'California'
-        HBNBCommand().onecmd("update State {} {} {}"
+        HBNBCommand().onecmd('update State {} {} "{}"'
                              .format(self.state_id, att, value))
         key = 'State.{}'.format(self.state_id)
         self.assertEqual(getattr(storage.all().get(key), att), value)
@@ -372,7 +372,7 @@ class TestConsole(TestCase):
         """Tests update Review instance"""
         att = 'user_id'
         value = self.user_id
-        HBNBCommand().onecmd("update Review {} {} {}"
+        HBNBCommand().onecmd('update Review {} {} "{}"'
                              .format(self.review_id, att, value))
         key = 'Review.{}'.format(self.review_id)
         self.assertEqual(getattr(storage.all().get(key), att), value)
@@ -384,7 +384,7 @@ class TestConsole(TestCase):
         """Tests update Place instance"""
         att = 'name'
         value = 'Westlands'
-        HBNBCommand().onecmd("update Place {} {} {}"
+        HBNBCommand().onecmd('update Place {} {} "{}"'
                              .format(self.place_id, att, value))
         key = 'Place.{}'.format(self.place_id)
         self.assertEqual(getattr(storage.all().get(key), att), value)
@@ -396,7 +396,7 @@ class TestConsole(TestCase):
         """Tests update City instance"""
         att = 'name'
         value = 'Paris'
-        HBNBCommand().onecmd("update City {} {} {}"
+        HBNBCommand().onecmd('update City {} {} "{}"'
                              .format(self.city_id, att, value))
         key = 'City.{}'.format(self.city_id)
         self.assertEqual(getattr(storage.all().get(key), att), value)
@@ -408,7 +408,7 @@ class TestConsole(TestCase):
         """Tests update BaseModel instance"""
         att = 'name'
         value = 'Test'
-        HBNBCommand().onecmd("update BaseModel {} {} {}"
+        HBNBCommand().onecmd('update BaseModel {} {} "{}"'
                              .format(self.base_model_id, att, value))
         key = 'BaseModel.{}'.format(self.base_model_id)
         self.assertEqual(getattr(storage.all().get(key), att), value)
