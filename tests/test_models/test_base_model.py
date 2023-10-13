@@ -2,6 +2,7 @@
 """Tests for BaseModel class"""
 import json
 import os
+import unittest
 from unittest import TestCase
 from models.base_model import BaseModel
 from datetime import datetime
@@ -87,3 +88,7 @@ class TestBaseModel(TestCase):
         self.assertEqual(self.model.created_at, model.created_at)
         self.assertEqual(self.model.updated_at, model.updated_at)
         self.assertEqual("Test Model", model.name)
+
+
+if __name__ == '__main__':
+    unittest.main()

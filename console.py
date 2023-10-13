@@ -137,38 +137,41 @@ class HBNBCommand(cmd.Cmd):
         setattr(instance, arg[2], value)
         instance.save()
 
-    def default(self, line):
-        """Handle shortcut/customized commands"""
+    def onecmd(self, line):
+        """Override to handle advanced commands"""
         # Model.all
         match = re.search(self.patterns['all'], line)
         if match:
             klas = match.group(1)
-            return self.cmdqueue.append("all {}".format(klas))
+            return self.do_all(klas)
         # Mode.count
         match = re.search(self.patterns['count'], line)
         if match:
             klas = match.group(1)
             if klas in self.__classes:
-                matching = [k for k in storage.all().keys() if
-                            k.startswith(klas)]
-                return print(len(matching))
+                return len(self.do_all(klas))
         # Model.show
         match = re.search(self.patterns['show'], line)
         if match:
-            klas, uid = self.split_arg(line)
-            return self.cmdqueue.append("show {} {}".format(klas, uid))
+            klas = match.group(1)
+            uid = eval(match.group(2))
+            return self.do_show("{} {}".format(klas, uid))
         # Model.destroy
         match = re.search(self.patterns['destroy'], line)
         if match:
-            klas, uid = self.split_arg(line)
-            return self.cmdqueue.append("destroy {} {}".format(klas, uid))
+            klas = match.group(1)
+            uid = eval(match.group(2))
+            return self.do_destroy("{} {}".format(klas, uid))
         match = re.search(self.patterns['update'], line)
         # Model.update
         if match:
-            klas, uid, name, attribute_name, value = self.split_arg(line)
-            command = "update {} {} {} {}".format(klas, uid,
-                                                  attribute_name,value)
-            return self.cmdqueue.append(command)
+            klas = match.group(1)
+            uid = match.group(2)
+            attribute_name = match.group(3)
+            value = eval(match.group(4))
+            command = "{} {} {} {}".format(klas, uid,
+                                           attribute_name, value)
+            return self.do_update(command)
         # Model.update with dict
         match = re.search(self.patterns['update_from_dict'], line)
         if match:
@@ -178,7 +181,7 @@ class HBNBCommand(cmd.Cmd):
             commands = ["update {} {} {} {}".format(klas, uid, k,  v)
                         for k, v in kw.items()]
             return self.cmdqueue.extend(commands)
-        return super(HBNBCommand, self).default(line)
+        return super(HBNBCommand, self).onecmd(line)
 
 
 if __name__ == "__main__":

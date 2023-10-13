@@ -2,6 +2,7 @@
 """This module tests the User Model"""
 import json
 import os
+import unittest
 from datetime import datetime
 from unittest import TestCase
 from models.user import User
@@ -90,3 +91,7 @@ class TestUser(TestCase):
         with open(self.file_name, 'r') as f:
             data = json.loads(f.read() or "{}")
             self.assertIn(key, data.keys())
+
+
+if __name__ == '__main__':
+    unittest.main()

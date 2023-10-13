@@ -2,6 +2,7 @@
 """This is a Testsuite for the console"""
 import json
 import os.path
+import unittest
 import uuid
 from io import StringIO
 from unittest import TestCase
@@ -213,14 +214,14 @@ class TestConsole(TestCase):
     def test_destroy_with_invalid_class(self):
         """Tests destroy with invalid className"""
         with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("show Goat")
+            HBNBCommand().onecmd("destroy Goat")
             uid = f.getvalue().strip().split('\n')[-1]
             self.assertEqual(uid, "** class doesn't exist **")
 
     def test_destroy_without_id(self):
         """Tests destroy without an instance id"""
         with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("show User")
+            HBNBCommand().onecmd("destroy User")
             uid = f.getvalue().strip().split('\n')[-1]
             self.assertEqual(uid, "** instance id missing **")
 
@@ -425,3 +426,17 @@ class TestConsole(TestCase):
         with open(self.file_name, 'r') as file:
             data = json.loads(file.read())
             self.assertEqual(data[key][att], value)
+
+    def test_advanced_all(self):
+        """Tests User.all()"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("User.all()")
+            res = eval(f.getvalue().strip().split('\n')[-1])
+            expected = [str(user) for k, user in storage.all().items() if
+                        k.startswith('User.')]
+            for i in range(len(expected)):
+                self.assertEqual(res[i], expected[i])
+
+
+if __name__ == '__main__':
+    unittest.main()

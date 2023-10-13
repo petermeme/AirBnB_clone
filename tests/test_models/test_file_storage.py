@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """This module tests the storage process flow"""
+import unittest
 from unittest import TestCase
 
 from models import storage
@@ -51,3 +52,6 @@ class TestFileStorage(TestCase):
         storage.reload()
         self.assertEqual(storage.all()[key].name, "Save me!")
 
+
+if __name__ == '__main__':
+    unittest.main()
