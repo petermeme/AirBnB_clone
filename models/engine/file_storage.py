@@ -1,6 +1,9 @@
 #!/usr/bin/python3
 """Defines the FileStorage class."""
 import json
+import os
+from pathlib import Path
+
 from models.base_model import BaseModel
 from models.user import User
 from models.state import State
@@ -15,9 +18,10 @@ class FileStorage:
 
     Attributes:
         __file_path (str):  string - path to the JSON file (ex: file.json)
-        __objects (dict): dictionary - empty but will store all objects by class.
+        __objects (dict): dictionary - empty but will store all objects by
+        class.
     """
-    __file_path = "file.json"
+    __file_path = 'file.json'
     __objects = {}
 
     def all(self):
