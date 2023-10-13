@@ -257,3 +257,43 @@ class TestConsole(TestCase):
             with open(self.file_name, 'r') as file:
                 keys = json.loads(file.read()).keys()
                 self.assertNotIn(key, keys)
+
+    def test_destroy_place(self):
+        """Tests destroy Place instance"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("destroy Place %s" % self.place_id)
+            key = 'Place.{}'.format(self.place_id)
+            self.assertIsNone(storage.all().get(key))
+            with open(self.file_name, 'r') as file:
+                keys = json.loads(file.read()).keys()
+                self.assertNotIn(key, keys)
+
+    def test_destroy_city(self):
+        """Tests destroy City instance"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("destroy City %s" % self.city_id)
+            key = 'City.{}'.format(self.city_id)
+            self.assertIsNone(storage.all().get(key))
+            with open(self.file_name, 'r') as file:
+                keys = json.loads(file.read()).keys()
+                self.assertNotIn(key, keys)
+
+    def test_destroy_base_model(self):
+        """Tests destroy BaseModel instance"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("destroy BaseModel %s" % self.base_model_id)
+            key = 'BaseModel.{}'.format(self.base_model_id)
+            self.assertIsNone(storage.all().get(key))
+            with open(self.file_name, 'r') as file:
+                keys = json.loads(file.read()).keys()
+                self.assertNotIn(key, keys)
+
+    def test_destroy_amenity(self):
+        """Tests destroy Amenity instance"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("destroy Amenity %s" % self.amenity_id)
+            key = 'Amenity.{}'.format(self.amenity_id)
+            self.assertIsNone(storage.all().get(key))
+            with open(self.file_name, 'r') as file:
+                keys = json.loads(file.read()).keys()
+                self.assertNotIn(key, keys)
