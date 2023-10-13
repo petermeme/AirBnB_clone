@@ -315,3 +315,17 @@ class TestConsole(TestCase):
                         k.startswith('User.')]
             for i in range(len(expected)):
                 self.assertEqual(res[i], expected[i])
+
+    def test_update_without_class(self):
+        """Tests update without a className"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("update")
+            uid = f.getvalue().strip().split('\n')[-1]
+            self.assertEqual(uid, "** class name missing **")
+
+    def test_update_with_invalid_class(self):
+        """Tests show with an invalid className"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("show Goat")
+            uid = f.getvalue().strip().split('\n')[-1]
+            self.assertEqual(uid, "** class doesn't exist **")
