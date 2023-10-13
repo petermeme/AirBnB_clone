@@ -166,8 +166,8 @@ class HBNBCommand(cmd.Cmd):
         # Model.update
         if match:
             klas = match.group(1)
-            uid = match.group(2)
-            attribute_name = match.group(3)
+            uid = eval(match.group(2))
+            attribute_name = eval(match.group(3))
             value = eval(match.group(4))
             command = "{} {} {} {}".format(klas, uid,
                                            attribute_name, value)
@@ -178,9 +178,9 @@ class HBNBCommand(cmd.Cmd):
             klas = match.group(1)
             uid = eval(match.group(2))
             kw = eval(match.group(3))
-            commands = ["update {} {} {} {}".format(klas, uid, k,  v)
-                        for k, v in kw.items()]
-            return self.cmdqueue.extend(commands)
+            for k, v in kw.items():
+                self.do_update("{} {} {} {}".format(klas, uid, k,  v))
+            return
         return super(HBNBCommand, self).onecmd(line)
 
 

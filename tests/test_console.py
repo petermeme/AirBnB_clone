@@ -427,7 +427,7 @@ class TestConsole(TestCase):
             data = json.loads(file.read())
             self.assertEqual(data[key][att], value)
 
-    def test_advanced_all(self):
+    def test_all_user_advanced(self):
         """Tests User.all()"""
         with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd("User.all()")
@@ -436,6 +436,58 @@ class TestConsole(TestCase):
                         k.startswith('User.')]
             for i in range(len(expected)):
                 self.assertEqual(res[i], expected[i])
+
+    def test_show_user_advanced(self):
+        """Tests User.show()"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd('User.show("%s")' % self.user_id)
+            res = f.getvalue().strip().split('\n')[-1]
+            key = 'User.{}'.format(self.user_id)
+            expected = str(storage.all().get(key))
+            self.assertEqual(res, expected)
+
+    def test_destroy_user_advanced(self):
+        """Tests User.destroy()"""
+        HBNBCommand().onecmd('User.destroy("%s")' % self.user_id)
+        key = 'User.{}'.format(self.user_id)
+        self.assertIsNone(storage.all().get(key))
+        with open(self.file_name, 'r') as file:
+            keys = json.loads(file.read()).keys()
+            self.assertNotIn(key, keys)
+
+    def test_update_user_advanced_string(self):
+        att = 'email'
+        value = 'testupdate@alx.org'
+        HBNBCommand().onecmd('User.update("{}", "{}", "{}")'.
+                             format(self.user_id, att, value))
+        key = 'User.{}'.format(self.user_id)
+        self.assertEqual(getattr(storage.all().get(key), att), value)
+        with open(self.file_name, 'r') as file:
+            data = json.loads(file.read())
+            self.assertEqual(data[key][att], value)
+
+    def test_update_user_advanced_int(self):
+        att = 'age'
+        value = 25
+        HBNBCommand().onecmd('User.update("{}", "{}", "{}")'.
+                             format(self.user_id, att, value))
+        key = 'User.{}'.format(self.user_id)
+        self.assertEqual(getattr(storage.all().get(key), att), value)
+        with open(self.file_name, 'r') as file:
+            data = json.loads(file.read())
+            self.assertEqual(data[key][att], value)
+
+    def test_update_user_advanced_dict(self):
+        vals = {"first_name": "John", "age": 89}
+        HBNBCommand().onecmd('User.update("{}", {})'.
+                             format(self.user_id, vals))
+        key = 'User.{}'.format(self.user_id)
+        self.assertEqual(getattr(storage.all().get(key), 'first_name'), "John")
+        self.assertEqual(getattr(storage.all().get(key), 'age'), 89)
+        with open(self.file_name, 'r') as file:
+            data = json.loads(file.read())
+            self.assertEqual(data[key]['first_name'], "John")
+            self.assertEqual(data[key]['age'], 89)
 
 
 if __name__ == '__main__':
