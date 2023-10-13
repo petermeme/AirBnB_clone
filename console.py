@@ -53,27 +53,34 @@ class HBNBCommand(cmd.Cmd):
         """EOF signal to exit the program."""
         return True
 
+    def split_arg(self, arg):
+        """Split the line in to substrings based on double quotes and spaces"""
+        pattern = r'(?:"[^"]+"|\S+)'
+        return re.findall(pattern, arg)
+
     def do_create(self, arg):
         """Creates an instance of the passed class if it exists,
         saves it and prints its id"""
+        arg = self.split_arg(arg)
         if not arg:
             return print("** class name missing **")
-        if arg not in self.__classes:
+        klas = arg[0]
+        if klas not in self.__classes:
             return print("** class doesn't exist **")
-        obj = eval(arg)()
+        obj = eval(klas)()
         obj.save()
         print(obj.id)
 
     def do_show(self, arg):
         """prints the string representation of an instance"""
+        arg = self.split_arg(arg)
         if not arg:
             return print("** class name missing **")
-        args = arg.split()
-        if args[0] not in self.__classes:
+        if arg[0] not in self.__classes:
             return print("** class doesn't exist **")
-        if len(args) < 2:
+        if len(arg) < 2:
             return print("** instance id missing **")
-        key = "{}.{}".format(args[0], args[1])
+        key = "{}.{}".format(arg[0], arg[1])
         instance = storage.all().get(key)
         if not instance:
             return print("** no instance found **")
@@ -81,14 +88,14 @@ class HBNBCommand(cmd.Cmd):
 
     def do_destroy(self, arg):
         """deletes an instance given a classname and instance id"""
+        arg = self.split_arg(arg)
         if not arg:
             return print("** class name missing **")
-        args = arg.split()
-        if args[0] not in self.__classes:
+        if arg[0] not in self.__classes:
             return print("** class doesn't exist **")
-        if len(args) < 2:
+        if len(arg) < 2:
             return print("** instance id missing **")
-        key = "{}.{}".format(args[0], args[1])
+        key = "{}.{}".format(arg[0], arg[1])
         instance = storage.all().get(key)
         if not instance:
             return print("** no instance found **")
@@ -96,36 +103,38 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, arg):
         """prints all instances of a given model"""
+        arg = self.split_arg(arg)
         if not arg:
             return print("** class name missing **")
-        if arg not in self.__classes:
+        klas = arg[0]
+        if klas not in self.__classes:
             return print("** class doesn't exist **")
         instances = [str(instance) for k, instance in storage.all().items() if
-                     k.startswith("{}.".format(arg))]
+                     k.startswith("{}.".format(klas))]
         print(instances)
 
     def do_update(self, arg):
         """updates a model instance"""
+        arg = self.split_arg(arg)
         if not arg:
             return print("** class name missing **")
-        args = arg.split()
-        if args[0] not in self.__classes:
+        if arg[0] not in self.__classes:
             return print("** class doesn't exist **")
-        if len(args) < 2:
+        if len(arg) < 2:
             return print("** instance id missing **")
-        key = "{}.{}".format(args[0], args[1])
+        key = "{}.{}".format(arg[0], arg[1])
         instance = storage.all().get(key)
         if not instance:
             return print("** no instance found **")
-        if len(args) < 3:
+        if len(arg) < 3:
             return print("** attribute name missing **")
-        if len(args) < 4:
+        if len(arg) < 4:
             return print("** value missing **")
         try:
-            value = eval(args[3])
-        except NameError:
-            value = args[3]
-        setattr(instance, args[2], value)
+            value = eval(arg[3])
+        except (NameError, SyntaxError):
+            value = arg[3]
+        setattr(instance, arg[2], value)
         instance.save()
 
     def default(self, line):
