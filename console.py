@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/python3
 """Defines the HBnB console."""
 import cmd
 import re
@@ -156,7 +156,9 @@ class HBNBCommand(cmd.Cmd):
         if match:
             klas = match.group(1)
             if klas in self.__classes:
-                return len(self.do_all(klas))
+                return print(len([str(instance) for k, instance in
+                                  storage.all().items() if
+                                  k.startswith("{}.".format(klas))]))
         # Model.show
         match = re.search(self.patterns['show'], line)
         if match:
