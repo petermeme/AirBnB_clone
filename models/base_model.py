@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-
 """
 This is an abstraction class to be inherited by other classes of the project
 """
