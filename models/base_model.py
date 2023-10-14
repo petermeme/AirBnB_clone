@@ -2,14 +2,14 @@
 """
 This is an abstraction class to be inherited by other classes of the project
 """
-import models
+from . import storage
 import uuid
 from datetime import datetime
 
 
 class BaseModel:
     """
-    defines all common attributes/methods for other classes
+    Defines all common attributes/methods for other classes
     """
 
     def __init__(self, *args, **kwargs):
@@ -29,7 +29,7 @@ class BaseModel:
             now = datetime.now()
             self.created_at = now
             self.updated_at = now
-            models.storage.new(self)
+            storage.new(self)
 
     def __str__(self):
         return "[{}] ({}) {}".format(self.__class__.__name__,
@@ -39,7 +39,7 @@ class BaseModel:
         """updates the public instance attribute updated_
         at with the current datetime"""
         self.updated_at = datetime.now()
-        models.storage.save()
+        storage.save()
 
     def to_dict(self):
         """Returns a dictionary representation of an object"""

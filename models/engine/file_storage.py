@@ -1,16 +1,6 @@
 #!/usr/bin/python3
 """Defines the FileStorage class."""
 import json
-import os
-from pathlib import Path
-
-from models.base_model import BaseModel
-from models.user import User
-from models.state import State
-from models.city import City
-from models.place import Place
-from models.amenity import Amenity
-from models.review import Review
 
 
 class FileStorage:
@@ -42,6 +32,13 @@ class FileStorage:
 
     def reload(self):
         """Deserialize the JSON file __file_path to __objects, if it exists."""
+        from models.base_model import BaseModel
+        from models.user import User
+        from models.place import Place
+        from models.state import State
+        from models.city import City
+        from models.amenity import Amenity
+        from models.review import Review
         try:
             with open(self.__file_path) as f:
                 data = f.read()
