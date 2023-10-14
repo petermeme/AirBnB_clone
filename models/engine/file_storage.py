@@ -50,7 +50,6 @@ class FileStorage:
                 obj_dict = json.loads(data)
                 for o in obj_dict.values():
                     cls_name = o["__class__"]
-                    del o["__class__"]
                     self.new(eval(cls_name)(**o))
         except FileNotFoundError:
             return
