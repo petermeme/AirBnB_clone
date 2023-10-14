@@ -26,7 +26,7 @@ class FileStorage:
     def save(self):
         """Serialize __objects to the JSON file __file_path."""
         data = {k: obj.to_dict() for k, obj in
-                self.__objects.items()}
+                self.__objects.items() if obj}
         with open(self.__file_path, "w") as f:
             json.dump(data, f)
 
@@ -50,9 +50,3 @@ class FileStorage:
                     self.new(eval(cls_name)(**o))
         except FileNotFoundError:
             return
-
-    def delete(self, key):
-        """deletes an instance given a key in the format <Model.instance_id>"""
-        if key in self.__objects:
-            del self.__objects[key]
-            self.save()
