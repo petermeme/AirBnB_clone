@@ -26,37 +26,36 @@ class FileStorage:
 
     def all(self):
         """Returns the dictionary __objects."""
-        return FileStorage.__objects
+        return self.__objects
 
     def new(self, obj):
         """Set in __objects obj with key <obj_class_name>.id"""
         key = "{}.{}".format(obj.__class__.__name__, obj.id)
-        FileStorage.__objects[key] = obj
+        self.__objects[key] = obj
 
     def save(self):
         """Serialize __objects to the JSON file __file_path."""
         data = {k: obj.to_dict() for k, obj in
-                FileStorage.__objects.items()}
-        with open(FileStorage.__file_path, "w") as f:
+                self.__objects.items()}
+        with open(self.__file_path, "w") as f:
             json.dump(data, f)
 
     def reload(self):
         """Deserialize the JSON file __file_path to __objects, if it exists."""
         try:
-            with open(FileStorage.__file_path) as f:
+            with open(self.__file_path) as f:
                 data = f.read()
                 if not data:  # empty file
                     return
                 obj_dict = json.loads(data)
                 for o in obj_dict.values():
                     cls_name = o["__class__"]
-                    del o["__class__"]
                     self.new(eval(cls_name)(**o))
         except FileNotFoundError:
             return
 
-    def delete(self, key):
-        """deletes an instance given a key in the format <Model.instance_id>"""
-        if key in self.__objects:
-            del self.__objects[key]
-            self.save()
+    # def delete(self, key):
+    #     """deletes an instance given a key in the format <Model.instance_id>"""
+    #     if key in self.__objects:
+    #         del self.__objects[key]
+    #         self.save()
