@@ -101,6 +101,7 @@ class HBNBCommand(cmd.Cmd):
             return print("** no instance found **")
         del instance
         del storage.all()[key]
+        storage.save()
 
     def do_all(self, arg):
         """prints all instances of a given model"""
