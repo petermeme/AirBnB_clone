@@ -3,13 +3,15 @@
 Contains the TestUserDocs classes
 """
 
-from datetime import datetime
 import inspect
-from models import user
-from models.base_model import BaseModel
-import pep8
 import unittest
-User = user.User
+
+import pep8
+
+from models import user as g_user
+from models.base_model import BaseModel
+
+User = g_user.User
 
 
 class TestUserDocs(unittest.TestCase):
@@ -35,9 +37,9 @@ class TestUserDocs(unittest.TestCase):
 
     def test_user_module_docstring(self):
         """Test for the user.py module docstring"""
-        self.assertIsNot(user.__doc__, None,
+        self.assertIsNot(g_user.__doc__, None,
                          "user.py needs a docstring")
-        self.assertTrue(len(user.__doc__) >= 1,
+        self.assertTrue(len(g_user.__doc__) >= 1,
                         "user.py needs a docstring")
 
     def test_user_class_docstring(self):

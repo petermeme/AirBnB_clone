@@ -3,13 +3,15 @@
 Contains the TestCityDocs classes
 """
 
-from datetime import datetime
 import inspect
-from models import city
-from models.base_model import BaseModel
-import pep8
 import unittest
-City = city.City
+
+import pep8
+
+from models import city as g_city
+from models.base_model import BaseModel
+
+City = g_city.City
 
 
 class TestCityDocs(unittest.TestCase):
@@ -35,9 +37,9 @@ class TestCityDocs(unittest.TestCase):
 
     def test_city_module_docstring(self):
         """Test for the city.py module docstring"""
-        self.assertIsNot(city.__doc__, None,
+        self.assertIsNot(g_city.__doc__, None,
                          "city.py needs a docstring")
-        self.assertTrue(len(city.__doc__) >= 1,
+        self.assertTrue(len(g_city.__doc__) >= 1,
                         "city.py needs a docstring")
 
     def test_city_class_docstring(self):
