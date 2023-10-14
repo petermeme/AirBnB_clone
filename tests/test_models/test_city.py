@@ -16,6 +16,7 @@ City = g_city.City
 
 class TestCityDocs(unittest.TestCase):
     """Tests to check the documentation and style of City class"""
+
     @classmethod
     def setUpClass(cls):
         """Set up for the doc tests"""
@@ -60,6 +61,7 @@ class TestCityDocs(unittest.TestCase):
 
 class TestCity(unittest.TestCase):
     """Test the City class"""
+
     def test_is_subclass(self):
         """Test that City is a subclass of BaseModel"""
         city = City()
@@ -105,3 +107,7 @@ class TestCity(unittest.TestCase):
         city = City()
         string = "[City] ({}) {}".format(city.id, city.__dict__)
         self.assertEqual(string, str(city))
+
+
+if __name__ == '__main__':
+    unittest.main()
