@@ -16,6 +16,7 @@ Place = g_place.Place
 
 class TestPlaceDocs(unittest.TestCase):
     """Tests to check the documentation and style of Place class"""
+
     @classmethod
     def setUpClass(cls):
         """Set up for the doc tests"""
@@ -60,6 +61,7 @@ class TestPlaceDocs(unittest.TestCase):
 
 class TestPlace(unittest.TestCase):
     """Test the Place class"""
+
     def test_is_subclass(self):
         """Test that Place is a subclass of BaseModel"""
         place = Place()
@@ -166,3 +168,7 @@ class TestPlace(unittest.TestCase):
         place = Place()
         string = "[Place] ({}) {}".format(place.id, place.__dict__)
         self.assertEqual(string, str(place))
+
+
+if __name__ == '__main__':
+    unittest.main()

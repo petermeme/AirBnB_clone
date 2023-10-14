@@ -3,18 +3,20 @@
 Contains the TestFileStorageDocs classes
 """
 
-from datetime import datetime
 import inspect
-from models.engine import file_storage
+import unittest
+
+import pep8
+
 from models.amenity import Amenity
 from models.base_model import BaseModel
 from models.city import City
+from models.engine import file_storage
 from models.place import Place
 from models.review import Review
 from models.state import State
 from models.user import User
-import pep8
-import unittest
+
 FileStorage = file_storage.FileStorage
 classes = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
            "Place": Place, "Review": Review, "State": State, "User": User}
@@ -87,3 +89,7 @@ class TestFileStorage(unittest.TestCase):
                 test_dict[instance_key] = instance
                 self.assertEqual(test_dict, storage._FileStorage__objects)
         storage._FileStorage__objects = {}
+
+
+if __name__ == '__main__':
+    unittest.main()
