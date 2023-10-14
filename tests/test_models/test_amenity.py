@@ -8,10 +8,10 @@ import unittest
 
 import pep8
 
-from models import amenity
+from models import amenity as g_amenity
 from models.base_model import BaseModel
 
-Amenity = amenity.Amenity
+Amenity = g_amenity.Amenity
 
 
 class TestAmenityDocs(unittest.TestCase):
@@ -37,9 +37,9 @@ class TestAmenityDocs(unittest.TestCase):
 
     def test_amenity_module_docstring(self):
         """Test for the amenity.py module docstring"""
-        self.assertIsNot(amenity.__doc__, None,
+        self.assertIsNot(g_amenity.__doc__, None,
                          "amenity.py needs a docstring")
-        self.assertTrue(len(amenity.__doc__) >= 1,
+        self.assertTrue(len(g_amenity.__doc__) >= 1,
                         "amenity.py needs a docstring")
 
     def test_amenity_class_docstring(self):

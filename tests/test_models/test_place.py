@@ -3,13 +3,15 @@
 Contains the TestPlaceDocs classes
 """
 
-from datetime import datetime
 import inspect
-from models import place
-from models.base_model import BaseModel
-import pep8
 import unittest
-Place = place.Place
+
+import pep8
+
+from models import place as g_place
+from models.base_model import BaseModel
+
+Place = g_place.Place
 
 
 class TestPlaceDocs(unittest.TestCase):
@@ -35,9 +37,9 @@ class TestPlaceDocs(unittest.TestCase):
 
     def test_place_module_docstring(self):
         """Test for the place.py module docstring"""
-        self.assertIsNot(place.__doc__, None,
+        self.assertIsNot(g_place.__doc__, None,
                          "place.py needs a docstring")
-        self.assertTrue(len(place.__doc__) >= 1,
+        self.assertTrue(len(g_place.__doc__) >= 1,
                         "place.py needs a docstring")
 
     def test_place_class_docstring(self):
@@ -125,7 +127,7 @@ class TestPlace(unittest.TestCase):
         self.assertEqual(type(place.latitude), float)
         self.assertEqual(place.latitude, 0.0)
 
-    def test_latitude_attr(self):
+    def test_latitude_attr_1(self):
         """Test Place has attr longitude, and it's a float == 0.0"""
         place = Place()
         self.assertTrue(hasattr(place, "longitude"))
