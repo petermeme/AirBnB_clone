@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/python3
 """Defines the States."""
 from models.base_model import BaseModel
 
