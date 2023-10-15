@@ -2,23 +2,23 @@
 """Defines unittests for console.py.
 
 Unittest classes:
-    Testprompting
-    Testhelp
-    Testexit
-    Testcreate
-    Testshow
-    Testall
-    Testdestroy
-    Testupdate
+    TestPrompting
+    TestHelp
+    TestExit
+    TestCreate
+    TestShow
+    TestAll
+    TestDestroy
+    TestUpdate
 """
 import os
-import sys
 import unittest
-from models import storage
-from models.engine.file_storage import FileStorage
-from console import HBNBCommand
 from io import StringIO
 from unittest.mock import patch
+
+from console import HBNBCommand
+from models import storage
+from models.engine.file_storage import FileStorage
 
 
 class TestPrompting(unittest.TestCase):
@@ -31,6 +31,7 @@ class TestPrompting(unittest.TestCase):
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd(""))
             self.assertEqual("", output.getvalue().strip())
+
 
 class TestExit(unittest.TestCase):
     """Unittests for testing exiting from the HBNB command interpreter."""
@@ -48,7 +49,7 @@ class TestCreate(unittest.TestCase):
     """Unittests for testing create from the HBNB command interpreter."""
 
     @classmethod
-    def setUp(self):
+    def setUp(cls):
         try:
             os.rename("file.json", "tmp")
         except IOError:
@@ -56,7 +57,7 @@ class TestCreate(unittest.TestCase):
         FileStorage.__objects = {}
 
     @classmethod
-    def tearDown(self):
+    def tearDown(cls):
         try:
             os.remove("file.json")
         except IOError:
@@ -130,7 +131,7 @@ class TestShow(unittest.TestCase):
     """Unittests for testing show from the HBNB command interpreter"""
 
     @classmethod
-    def setUp(self):
+    def setUp(cls):
         try:
             os.rename("file.json", "tmp")
         except IOError:
@@ -138,7 +139,7 @@ class TestShow(unittest.TestCase):
         FileStorage.__objects = {}
 
     @classmethod
-    def tearDown(self):
+    def tearDown(cls):
         try:
             os.remove("file.json")
         except IOError:
@@ -320,7 +321,7 @@ class TestShow(unittest.TestCase):
             self.assertFalse(HBNBCommand().onecmd(command))
             self.assertEqual(obj.__str__(), output.getvalue().strip())
 
-    def test_show_objects_space_notation(self):
+    def test_show_objects_space_notation_1(self):
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd("create BaseModel"))
             testID = output.getvalue().strip()
@@ -383,7 +384,7 @@ class TestDestroy(unittest.TestCase):
     """Unittests for testing destroy from the HBNB command interpreter."""
 
     @classmethod
-    def setUp(self):
+    def setUp(cls):
         try:
             os.rename("file.json", "tmp")
         except IOError:
@@ -391,7 +392,7 @@ class TestDestroy(unittest.TestCase):
         FileStorage.__objects = {}
 
     @classmethod
-    def tearDown(self):
+    def tearDown(cls):
         try:
             os.remove("file.json")
         except IOError:
@@ -634,10 +635,10 @@ class TestDestroy(unittest.TestCase):
 
 
 class TestAll(unittest.TestCase):
-    """Unittests for testing all of the HBNB command interpreter."""
+    """Unittests for testing all the HBNBCommand interpreter."""
 
     @classmethod
-    def setUp(self):
+    def setUp(cls):
         try:
             os.rename("file.json", "tmp")
         except IOError:
@@ -645,7 +646,7 @@ class TestAll(unittest.TestCase):
         FileStorage.__objects = {}
 
     @classmethod
-    def tearDown(self):
+    def tearDown(cls):
         try:
             os.remove("file.json")
         except IOError:
@@ -791,7 +792,7 @@ class TestUpdate(unittest.TestCase):
     """Unittests for testing update from the HBNB command interpreter."""
 
     @classmethod
-    def setUp(self):
+    def setUp(cls):
         try:
             os.rename("file.json", "tmp")
         except IOError:
@@ -799,7 +800,7 @@ class TestUpdate(unittest.TestCase):
         FileStorage.__objects = {}
 
     @classmethod
-    def tearDown(self):
+    def tearDown(cls):
         try:
             os.remove("file.json")
         except IOError:
@@ -1178,7 +1179,8 @@ class TestUpdate(unittest.TestCase):
         with patch("sys.stdout", new=StringIO()) as output:
             HBNBCommand().onecmd("create BaseModel")
             tId = output.getvalue().strip()
-        testCmd = 'BaseModel.update("{}", "attr_name", "attr_value")'.format(tId)
+        testCmd = 'BaseModel.update("{}", "attr_name", "attr_value")'.format(
+            tId)
         self.assertFalse(HBNBCommand().onecmd(testCmd))
         test_dict = storage.all()["BaseModel.{}".format(tId)].__dict__
         self.assertEqual("attr_value", test_dict["attr_name"])
@@ -1440,7 +1442,7 @@ class TestCount(unittest.TestCase):
     """Unittests for testing count method of HBNB comand interpreter."""
 
     @classmethod
-    def setUp(self):
+    def setUp(cls):
         try:
             os.rename("file.json", "tmp")
         except IOError:
@@ -1448,7 +1450,7 @@ class TestCount(unittest.TestCase):
         FileStorage._FileStorage__objects = {}
 
     @classmethod
-    def tearDown(self):
+    def tearDown(cls):
         try:
             os.remove("file.json")
         except IOError:
@@ -1461,7 +1463,8 @@ class TestCount(unittest.TestCase):
     def test_count_invalid_class(self):
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd("MyModel.count()"))
-            self.assertEqual("** class doesn't exist **", output.getvalue().strip())
+            self.assertEqual("** class doesn't exist **",
+                             output.getvalue().strip())
 
     def test_count_object(self):
         with patch("sys.stdout", new=StringIO()) as output:
