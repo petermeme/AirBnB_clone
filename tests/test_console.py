@@ -22,7 +22,7 @@ from models.engine.file_storage import FileStorage
 
 
 class TestPrompting(unittest.TestCase):
-    """Unittests for testing prompting of the HBNB command interpreter."""
+    """Unittests for testing prompting of the HBNBCommand interpreter."""
 
     def test_prompt_string(self):
         self.assertEqual("(hbnb) ", HBNBCommand.prompt)
@@ -34,7 +34,7 @@ class TestPrompting(unittest.TestCase):
 
 
 class TestExit(unittest.TestCase):
-    """Unittests for testing exiting from the HBNB command interpreter."""
+    """Unittests for testing exiting from the HBNBCommand interpreter."""
 
     def test_quit_exits(self):
         with patch("sys.stdout", new=StringIO()) as output:
@@ -46,7 +46,7 @@ class TestExit(unittest.TestCase):
 
 
 class TestCreate(unittest.TestCase):
-    """Unittests for testing create from the HBNB command interpreter."""
+    """Unittests for testing create from the HBNBCommand interpreter."""
 
     @classmethod
     def setUp(cls):
@@ -128,7 +128,7 @@ class TestCreate(unittest.TestCase):
 
 
 class TestShow(unittest.TestCase):
-    """Unittests for testing show from the HBNB command interpreter"""
+    """Unittests for testing show from the HBNBCommand interpreter"""
 
     @classmethod
     def setUp(cls):
@@ -381,7 +381,7 @@ class TestShow(unittest.TestCase):
 
 
 class TestDestroy(unittest.TestCase):
-    """Unittests for testing destroy from the HBNB command interpreter."""
+    """Unittests for testing destroy from the HBNBCommand interpreter."""
 
     @classmethod
     def setUp(cls):
@@ -789,7 +789,7 @@ class TestAll(unittest.TestCase):
 
 
 class TestUpdate(unittest.TestCase):
-    """Unittests for testing update from the HBNB command interpreter."""
+    """Unittests for testing update from the HBNBCommand interpreter."""
 
     @classmethod
     def setUp(cls):

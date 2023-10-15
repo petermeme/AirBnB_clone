@@ -61,7 +61,7 @@ class HBNBCommand(cmd.Cmd):
                 v = eval(res[i])
                 if type(v) in (int, str, float, dict):
                     res[i] = v
-            except:
+            except (NameError, SyntaxError, TypeError):
                 continue
         return res
 
