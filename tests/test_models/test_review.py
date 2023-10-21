@@ -3,12 +3,14 @@
 Contains the TestReviewDocs classes
 """
 
-from datetime import datetime
 import inspect
+import unittest
+
+import pep8
+
 from models import review as g_review
 from models.base_model import BaseModel
-import pep8
-import unittest
+
 Review = g_review.Review
 
 
