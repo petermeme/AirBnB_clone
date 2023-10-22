@@ -1,11 +1,11 @@
 .filters {
-    background-color: white;
+    background-color: #FFFFFF;
     border: 1px solid #DDDDDD;
     border-radius: 4px;
     height: 70px;
     width: 100%;
     position: relative;
-    vertical-align: middle;
+    align-items: center;
 }
 button {
     background-color: #FF5A5F;
@@ -13,12 +13,12 @@ button {
     font-size: 18px;
     height: 48px;
     width: 20%;
-    border: none;
+    border: 0;
     border-radius: 4px;
+    align-items: center;
     position: absolute;
-    top: 50%;
     right: 30px;
-    transform: translateY(-50%);
+    top: 15%;
 }
 button:hover{
     opacity: 90%;
@@ -37,12 +37,12 @@ button:hover{
 .locations {
     border-right: 1px solid #DDDDDD;
 }
-.locations h3, .amenities h3 {
+.title {
     font-weight: 600;
     padding: 0;
     margin: 0 0 0 40px;
 }
-.locations h4, .amenities h4 {
+.subtitle {
     font-weight: 400;
     font-size: 14px;
     padding: 0;

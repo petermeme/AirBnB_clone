@@ -1,8 +1,15 @@
-.places h1, h2{
+.places h1{
+    height: 30px;
+    width: 100%;
     font-size: 30px;
+    margin-bottom: auto;
 }
-
-.articles {
+.places h2 {
+    font-size: 30px;
+    margin-top: auto;
+    margin: auto;
+}
+.places {
     display: flex;
     gap: 20px;
     flex-wrap: wrap;
@@ -13,5 +20,6 @@ article {
     padding: 20px;
     border: 1px solid #FF5A5F;
     border-radius: 4px;
+    font-size: 30px;
     text-align: center;
 }
